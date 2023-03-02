@@ -1,0 +1,9 @@
+.example-spacer {
+  flex: 1 1 auto;
+}
+span{
+    font-family:Georgia, 'Times New Roman', Times, serif;
+}
+button{
+    font-family: Arial, Helvetica, sans-serif;
+}
