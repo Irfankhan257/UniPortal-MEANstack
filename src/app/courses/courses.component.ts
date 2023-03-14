@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { CoursesService } from './services/courses.service';
+import { SharedService } from '../shared/shared.service';
+import { University } from '../university/university.component';
 
-
-interface Course {
-  id: number;
+export interface Courses {
   name: string;
+  _id: any;
+  university: [{ name: any; _id: any }];
 }
 
 @Component({
@@ -14,30 +15,35 @@ interface Course {
   styleUrls: ['./courses.component.css'],
 })
 export class CoursesComponent {
-  courses: Course[];
-  displayedColumns: string[] = ['Id', 'name'];
+  courses: Courses[];
+  universities: University[];
+  displayedColumns: string[] = ['University Name', 'Course Name'];
   name: string;
-  id: string;
+  selectedUniversity: Courses;
+  uni_id: string;
 
-  constructor(
-    private http: HttpClient,
-    private coursesSerivice: CoursesService
-  ) {}
+  constructor(private http: HttpClient, private sharedService: SharedService) {}
 
   ngOnInit(): void {
-    this.http
-      .get<Course[]>('http://localhost:3000/courses')
-      .subscribe((data) => {
-        this.courses = data;
-      });
+    this.sharedService.getCourses().subscribe((data) => {
+      this.courses = data;
+    });
+    this.sharedService.getUniversity().subscribe((data) => {
+      this.universities = data;
+      console.log(data);
+    });
   }
-  createUser() {
-    this.coursesSerivice.createUser(this.id, this.name).subscribe(
+  createCourse() {
+    this.sharedService.createCourse(this.uni_id, this.name).subscribe(
       (response) => console.log(response),
       (error) => console.error(error)
     );
-     this.name = '';
-     this.id = '';
-     window.location.reload()
+    this.name = '';
+    window.location.reload();
+  }
+  onUniversitySelect() {
+    const uni_name = this.selectedUniversity._id;
+    this.uni_id = uni_name;
+    console.log(this.uni_id);
   }
 }

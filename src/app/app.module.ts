@@ -7,6 +7,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatSelectModule } from '@angular/material/select';
+import { MatListModule } from '@angular/material/list';
+
+
 
 
 
@@ -40,6 +44,8 @@ import { NavBarComponent } from './nav-bar/nav-bar.component';
     MatButtonModule,
     MatTableModule,
     MatToolbarModule,
+    MatSelectModule,
+    MatListModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

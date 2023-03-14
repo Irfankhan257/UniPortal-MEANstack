@@ -7,6 +7,18 @@ mongoose.connect(process.env.MONGO_URI, {
 
 const studentSchema = {
   id: Number,
+  courses: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "COURSE_PORTAL",
+    },
+  ],
+  university: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "UNI_PORTAL",
+    },
+  ],
   name: String,
 };
 

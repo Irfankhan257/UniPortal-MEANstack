@@ -1,35 +1,34 @@
-
-<mat-form-field class="example-full-width">
-  <mat-label>Courses ID</mat-label>
-  <input matInput type="text" [(ngModel)]="id" />
+<mat-form-field appearance="fill">
+  <mat-label>Select a university</mat-label>
+  <mat-select [(value)]="selectedUniversity" (selectionChange)="onUniversitySelect()">
+    <mat-option *ngFor="let uni of universities" [value]="uni">{{ uni.name}}</mat-option>
+  </mat-select>
 </mat-form-field>
+
+<br />
 <mat-form-field class="second example-full-width">
   <mat-label>Courses Name </mat-label>
   <input matInput type="text" [(ngModel)]="name" />
 </mat-form-field>
 <br />
-<button mat-raised-button color="primary" (click)="createUser()">Save</button>
+<button mat-raised-button color="primary" (click)="createCourse()">Save</button>
 <hr />
 
 <table mat-table [dataSource]="courses" class="mat-elevation-z8">
 
-  <!--- Note that these columns can be defined in any order.
-        The actual rendered columns are set as a property on the row definition" -->
-
-  <!-- Position Column -->
-  <ng-container matColumnDef="Id">
-    <th mat-header-cell *matHeaderCellDef> No. </th>
-    <td mat-cell *matCellDef="let course"> {{course.id}} </td>
+  <ng-container matColumnDef="University Name">
+    <th mat-header-cell *matHeaderCellDef>University Name</th>
+    <td mat-cell *matCellDef="let course">{{ course.university[0].name }}</td>
   </ng-container>
 
-  <!-- Name Column -->
-  <ng-container matColumnDef="name">
-    <th mat-header-cell *matHeaderCellDef> Name </th>
-    <td mat-cell *matCellDef="let course"> {{course.name}} </td>
-  </ng-container>
 
+  <ng-container matColumnDef="Course Name">
+    <th mat-header-cell *matHeaderCellDef>Name</th>
+    <td mat-cell *matCellDef="let course">{{ course.name }}</td>
+  </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 </table>
+
 

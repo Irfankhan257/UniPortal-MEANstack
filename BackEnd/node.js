@@ -13,7 +13,7 @@ app.listen(3000, () => {
 });
 
 app.get("/universities", async (request, response) => {
-  const users = await portal.find({}).populate("studentid");
+  const users = await portal.find({});
   try {
     response.send(users);
   } catch (error) {
@@ -22,7 +22,7 @@ app.get("/universities", async (request, response) => {
 });
 
 app.get("/students", async (request, response) => {
-  const users = await student.find({});
+  const users = await student.find({}).populate("courses").populate("university");
   try {
     response.send(users);
   } catch (error) {
@@ -31,7 +31,7 @@ app.get("/students", async (request, response) => {
 });
 
 app.get("/courses", async (request, response) => {
-  const users = await course.find({});
+  const users = await course.find({}).populate("university");
 
   try {
     response.send(users);
@@ -40,8 +40,8 @@ app.get("/courses", async (request, response) => {
   }
 });
 app.post("/universities", async (req, res) => {
-  const { id, name } = req.body;
-  const user = new portal({ id, name });
+  const { name } = req.body;
+  const user = new portal({ name });
   try {
     await user.save();
     res.status(201).json({ message: "User created successfully" });
@@ -50,20 +50,22 @@ app.post("/universities", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-app.post("/students", async (req, res) => {
-  const { id, name } = req.body;
-  const user = new student({ id, name });
-  try {
-    await user.save();
-    res.status(201).json({ message: "User created successfully" });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal server error" });
-  }
-});
+
 app.post("/courses", async (req, res) => {
-  const { id, name } = req.body;
-  const user = new course({ id, name });
+  const { name, university } = req.body;
+  const user = new course({ name, university });
+  try {
+    await user.save();
+    res.status(201).json({ message: "User created successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+app.post("/students", async (req, res) => {
+  const { name, courses, university } = req.body;
+  const user = new student({ name, university, courses });
   try {
     await user.save();
     res.status(201).json({ message: "User created successfully" });

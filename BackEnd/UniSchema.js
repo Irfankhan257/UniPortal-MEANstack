@@ -6,11 +6,6 @@ mongoose.connect(process.env.MONGO_URI, {
 });
 
 const portalSchema = {
-  id: String,
-  studentid:{
-    type:mongoose.Schema.Types.ObjectId,
-    ref:'STUDENT_PORTAL'
-  },
   name: String,
 };
 

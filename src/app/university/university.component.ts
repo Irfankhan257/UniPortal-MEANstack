@@ -1,11 +1,10 @@
-import { RouterModule, Router } from '@angular/router';
-import { UniversityService } from './services/university.service';
+import { SharedService } from '../shared/shared.service';
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
 
-interface University {
+export interface University {
   id: number;
+  courses: any[];
   name: string;
 }
 
@@ -16,32 +15,25 @@ interface University {
 })
 export class UniversityComponent {
   universities: University[];
-  displayedColumns: string[] = ['Id', 'name'];
+  displayedColumns: string[] = ['name'];
   name: string;
   id: string;
 
-  constructor(
-    private http: HttpClient,
-    private universityService: UniversityService,
-    private router: Router
-  ) {}
+  constructor(private http: HttpClient, private sharedService: SharedService) {}
   ngOnInit(): void {
-    this.http
-      .get<University[]>('http://localhost:3000/universities')
-      .subscribe((data) => {
-        this.universities = data;
-      });
+    this.sharedService.getUniversity().subscribe((data) => {
+      this.universities = data;
+      console.log(data);
+    });
   }
 
-  createUser() {
-    this.universityService.createUser(this.id, this.name).subscribe(
+  createUni() {
+    this.sharedService.createUni(this.id, this.name).subscribe(
       (response) => console.log(response),
       (error) => console.error(error)
-      
     );
     this.name = '';
     this.id = '';
     window.location.reload();
   }
-
 }
